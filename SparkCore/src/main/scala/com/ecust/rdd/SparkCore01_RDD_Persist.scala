@@ -23,6 +23,7 @@ object SparkCore01_RDD_Persist {
 
     resultRDD.collect().foreach(println)
     println("测试版本0.2")
+    println("测试版本0.3-hotfix")
     sc.stop()
   }
 }
