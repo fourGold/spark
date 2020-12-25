@@ -22,6 +22,7 @@ object SparkCore01_RDD_Persist {
     val resultRDD: RDD[(String, Int)] = tupleRDD.reduceByKey(_ + _)
 
     resultRDD.collect().foreach(println)
+    println("测试版本0.2")
     sc.stop()
   }
 }
