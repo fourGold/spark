@@ -29,6 +29,7 @@ object SparkCore01_RDD_Persist {
     println("测试版本0.4-hotfix")
     println("测试版本0.5-hotfix")
     println("测试版本0.6")
+    println("在线更新")
     sc.stop()
   }
 }
