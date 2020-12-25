@@ -20,7 +20,6 @@ object SparkCore01_RDD_Persist {
     val wordRDD: RDD[String] = listRDD.flatMap(word => word.split(" "))
     val tupleRDD: RDD[(String, Int)] = wordRDD.map(word => (word, 1))
     val resultRDD: RDD[(String, Int)] = tupleRDD.reduceByKey(_ + _)
-
     resultRDD.collect().foreach(println)
     sc.stop()
   }
