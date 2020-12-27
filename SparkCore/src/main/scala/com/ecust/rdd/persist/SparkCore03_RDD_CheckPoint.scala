@@ -1,13 +1,14 @@
-package com.ecust.rdd
+package com.ecust.rdd.persist
 
 import org.apache.spark.rdd.RDD
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * @author Jinxin Li
  * @create 2020-12-24 14:03
  */
-object SparkCore01_RDD_Persist {
+object SparkCore03_RDD_CheckPoint {
 
   def main(args: Array[String]): Unit = {
     val sparkConf: SparkConf = new SparkConf().setAppName("WordCountPersist").setMaster("local[1]")
@@ -15,12 +16,21 @@ object SparkCore01_RDD_Persist {
 
     val list = List("Hello Spark", "Hello Scala")
 
-    //生成RDD
     val listRDD: RDD[String] = sc.makeRDD(list, 1)
     val wordRDD: RDD[String] = listRDD.flatMap(word => word.split(" "))
     val tupleRDD: RDD[(String, Int)] = wordRDD.map(word => (word, 1))
-    val resultRDD: RDD[(String, Int)] = tupleRDD.reduceByKey(_ + _)
-    resultRDD.collect().foreach(println)
+//    tupleRDD.cache()
+    println(tupleRDD.toDebugString)//运行之前看血缘关系
+
+//    tupleRDD.persist(StorageLevel.MEMORY_AND_DISK)
+
+    sc.setCheckpointDir("./checkPoint")
+    tupleRDD.checkpoint()
+
+    val groupRDD: RDD[(String, Iterable[Int])] = tupleRDD.groupByKey()
+    groupRDD.collect().foreach(println)
+    println("----------------------------")
+    println(tupleRDD.toDebugString)//运行之后看血缘
     sc.stop()
   }
 }
