@@ -1,14 +1,17 @@
 package com.ecust.udf
 
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, SparkSession, functions}
 
 /**
  * @author Jinxin Li
  * @create 2021-01-01 13:29
- * 弱类型函数
+ * 弱类型操作,只有0,1 没有类型的概念
+ * 没有类型的概念
+ * 强类型通过属性操作,跟属性没关系
+ * 自定属性类,定义泛型
  */
-object SparkSQL02_UDAF {
+object SparkSQL03_UDAF {
   def main(args: Array[String]): Unit = {
     //创建SparkSQL的运行环境
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("BASIC")
@@ -32,9 +35,9 @@ object SparkSQL02_UDAF {
         |select prefixName(name),age from user
         |""".stripMargin).show()
 
-    //使用udaf函数
+    //使用udaf-aggregator函数
     val myAvg = new MyAvg()
-    sparkSession.udf.register("myAvg",myAvg)
+    sparkSession.udf.register("myAvg",functions.udaf(new MyAvgAgg))
     sparkSession.sql(
       """
         |select myAvg(age) as avgAge from user
