@@ -10,6 +10,7 @@
     <version>Spark-1.0</version>
     <modules>
         <module>SparkCore</module>
+        <module>SparkSQL</module>
     </modules>
 
     <properties>
