@@ -33,8 +33,6 @@ object SparkSQL02_SQL {
         |""".stripMargin).show()
 
 
-
-
     //关闭环境
     sparkSession.close()
   }
